@@ -1,4 +1,4 @@
-package com.ibik.academicservices.academicservices.programs;
+package com.ibik.academicservices.academicservices.programstudy;
 
 import org.springframework.data.repository.CrudRepository;
 

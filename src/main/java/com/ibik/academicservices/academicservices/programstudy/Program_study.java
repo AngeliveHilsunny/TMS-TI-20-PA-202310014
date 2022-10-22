@@ -1,4 +1,4 @@
-package com.ibik.academicservices.academicservices.programs;
+package com.ibik.academicservices.academicservices.programstudy;
 
 import java.io.Serializable;
 
@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name="program_study")
@@ -18,27 +19,25 @@ public class Program_study implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
-
+  
   @Column(length = 50)
+  @NotEmpty(message = "Name is required")
   private String name;
 
-  @Column(length = 20)
   private String description;
 
-  @Column(length = 5)
+  @Column(length = 10, unique = true)
+  @NotEmpty(message = "Code is required")
   private String code;
 
-  @Column(columnDefinition = "INT(11)")
   private int program_id;
 
-  @Column(columnDefinition = "INT(11)")
   private int faculty_id;
 
-  @Column(columnDefinition = "INT(11)")
   private int departement_id;
 
-  @Column(nullable = false, columnDefinition = "TINYINT(4)")
-  private boolean is_active;
+  @Column(columnDefinition = "TINYINT(1)")
+    private boolean is_active;
 
   public Program_study() {
   }

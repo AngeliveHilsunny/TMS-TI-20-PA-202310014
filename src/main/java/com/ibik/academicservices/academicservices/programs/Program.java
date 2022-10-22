@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name="programs")
@@ -20,12 +21,12 @@ public class Program implements Serializable {
   private int id;
 
   @Column(length = 20)
+  @NotEmpty(message = "Name is required")
   private String name;
 
-  @Column(length = 20)
   private String description;
   
-  @Column(nullable = false, columnDefinition = "TINYINT(1)")
+  @Column(columnDefinition = "TINYINT(1)")
   private boolean is_active;
 
   public Program() {
@@ -73,7 +74,5 @@ public class Program implements Serializable {
   public void setIs_active(boolean is_active) {
     this.is_active = is_active;
   }
-
-  
 
 }

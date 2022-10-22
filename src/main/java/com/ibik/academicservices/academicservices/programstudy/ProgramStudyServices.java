@@ -1,4 +1,4 @@
-package com.ibik.academicservices.academicservices.programs;
+package com.ibik.academicservices.academicservices.programstudy;
 
 import javax.transaction.Transactional;
 
@@ -12,8 +12,8 @@ public class ProgramStudyServices{
   @Autowired
   private ProgramStudyRepo programStudyRepo;
 
-  public Program_study save (Program_study programs) {
-    return programStudyRepo.save(programs);
+  public Program_study save (Program_study program_study) {
+    return programStudyRepo.save(program_study);
     // save() = insert
   }
 
