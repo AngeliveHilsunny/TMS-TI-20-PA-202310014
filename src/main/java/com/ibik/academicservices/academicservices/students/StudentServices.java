@@ -31,4 +31,10 @@ public class StudentServices{
     studentRepo.deleteById(id);
     // deleteById() = delete condition berdasar primarykey
   }
+
+  public Iterable<Student> findByName(String name) {
+      return studentRepo.findStudentByName("%" + name + "%");
+      // return studentRepo.findStudentByName( name );
+  }
+
 }

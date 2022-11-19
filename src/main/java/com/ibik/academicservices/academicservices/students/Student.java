@@ -1,15 +1,25 @@
 package com.ibik.academicservices.academicservices.students;
 
+
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+
+import com.ibik.academicservices.academicservices.courses.Courses;
+import com.ibik.academicservices.academicservices.programstudy.Program_study;
+import com.ibik.academicservices.academicservices.programs.Program;
 
 // import org.springframework.web.bind.annotation.Mapping;
 
@@ -44,6 +54,15 @@ public class Student implements Serializable {
 
     @Min(value = 1, message = "Department is required")
     private int departement_id;
+
+    // Menampung 2 tabel dengan membuat tabel tampungan     
+    @ManyToMany
+    @JoinTable(
+        name = "student_rel_courses",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private Set<Courses> courses;
 
     public Student() {
     }
