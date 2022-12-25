@@ -40,8 +40,8 @@ public class Courses implements Serializable {
     @Column(columnDefinition = "TINYINT(1)")
     private boolean is_active;
 
-    @ManyToMany(mappedBy = "courses")
-    private Set<Student> students;
+    // @ManyToMany(mappedBy = "courses")
+    // private Set<Student> students;
 
     public Courses() {
     }
@@ -96,12 +96,12 @@ public class Courses implements Serializable {
         this.is_active = is_active;
     }
 
-    public Set<Student> getStudents() {
-        return students;
-    }
+    // public Set<Student> getStudents() {
+    //     return students;
+    // }
 
-    public void setStudents(Set<Student> students) {
-        this.students = students;
-    }
+    // public void setStudents(Set<Student> students) {
+    //     this.students = students;
+    // }
     
 }

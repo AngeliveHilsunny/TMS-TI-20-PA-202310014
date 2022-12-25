@@ -36,5 +36,8 @@ public class StudentServices{
       return studentRepo.findStudentByName("%" + name + "%");
       // return studentRepo.findStudentByName( name );
   }
-
+  
+  public Iterable<Student> findAuth(String email, String password) {
+    return studentRepo.findStudentAuth(email, password);
+}
 }

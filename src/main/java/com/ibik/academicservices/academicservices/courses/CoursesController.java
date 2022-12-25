@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,46 +51,40 @@ public class CoursesController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponsData<Courses>> fetchCourses() {
-        
+    public ResponseEntity<ResponsData<Courses>> fetchCourses(){
         ResponsData<Courses> responseData = new ResponsData<>();
-        
         try {
-            Iterable<Courses> values = coursesServices.findAll();
             responseData.setResult(true);
-            responseData.setMessage(null);
-            responseData.setData(values);
+            List<Courses> value = (List<Courses>) coursesServices.findAll();
+            responseData.setData(value);
+
             return ResponseEntity.ok(responseData);
-        } catch (Exception e) {
-            List<String> message = new ArrayList<>();
-            message.add(e.getMessage());
-            responseData.setMessage(message);
-            responseData.setData(null);
+        } catch (Exception ex) {
             responseData.setResult(false);
+            responseData.getMessage().add(ex.getMessage());
+
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
         }
-
+        // return coursesServices.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponsData<Courses>> fetchCoursesById(@PathVariable("id") int id) {
+    public ResponseEntity<ResponsData<Courses>> fetchCoursesById(@PathVariable("id") int id){
         ResponsData<Courses> responseData = new ResponsData<>();
         try {
-            Courses value = coursesServices.findOne(id);
-            List<Courses> result = new ArrayList<>();
-            result.add(value);
-            responseData.setData(result);
             responseData.setResult(true);
-            responseData.setMessage(null);
+            List<Courses> value = new ArrayList<>();
+            value.add(coursesServices.findOne(id));
+            responseData.setData(value);
+
             return ResponseEntity.ok(responseData);
-        } catch (Exception e) {
-            List<String> message = new ArrayList<>();
-            message.add(e.getMessage());
-            responseData.setMessage(message);
-            responseData.setData(null);
+        } catch (Exception ex) {
             responseData.setResult(false);
+            responseData.getMessage().add(ex.getMessage());
+
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
         }
+        // return coursesServices.findOne(id);
     }
 
     @PutMapping
@@ -124,6 +119,24 @@ public class CoursesController {
             responseData.setMessage(message);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponsData<Void>> deleteCourses(@PathVariable("id") int id){
+        ResponsData<Void> responseData = new ResponsData<>();
+        try {
+            coursesServices.removeOne(id);
+            responseData.setResult(true);
+            responseData.getMessage().add("Successfully Remove");
+
+            return ResponseEntity.ok(responseData);
+        } catch (Exception ex) {
+            responseData.setResult(false);
+            responseData.getMessage().add(ex.getMessage());
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
+        }
+        // coursesServices.removeOne(id);
     }
 
 }

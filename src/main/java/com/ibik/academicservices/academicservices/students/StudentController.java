@@ -2,6 +2,7 @@ package com.ibik.academicservices.academicservices.students;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ibik.academicservices.academicservices.dto.AuthKey;
 import com.ibik.academicservices.academicservices.dto.ResponsData;
 import com.ibik.academicservices.academicservices.dto.SearchData;
 
@@ -62,52 +63,42 @@ public class StudentController {
     }
 
     @GetMapping
-    // public Iterable<Students> fetchStudent(){
-        public ResponseEntity<ResponsData<Student>> fetchStudent() {
+    public ResponseEntity<ResponsData<Student>> fetchStudents() {
 
-            ResponsData<Student> responseData = new ResponsData<>();
+        ResponsData<Student> responseData = new ResponsData<>();
 
-            try {
-                Iterable<Student> values = studentServices.findAll();
-                responseData.setResult(true);
-                responseData.setMessage(null);
-                responseData.setData(values);
-                return ResponseEntity.ok(responseData);
-            } catch (Exception e) {
-                List<String> message = new ArrayList<>();
-                message.add(e.getMessage());
-                responseData.setMessage(message);
-                responseData.setData(null);
-                responseData.setResult(false);
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
-            }
-            // return studentsServices.findAll();
+        try {
+            responseData.setResult(true);
+            List<Student> value = (List<Student>) studentServices.findAll();
+            responseData.setData(value);
+
+            return ResponseEntity.ok(responseData);
+        } catch (Exception ex) {
+            responseData.setResult(false);
+            responseData.getMessage().add(ex.getMessage());
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseData);
         }
-    
+
+    }
+
     @GetMapping("/{id}")
-    // public Students fetchStudentById(@PathVariable("id") int id){
-        public ResponseEntity<ResponsData<Student>> fetchStudentById(@PathVariable("id") int id) {
-    
-            ResponsData<Student> responseData = new ResponsData<>();
-    
-            try {
-                Student values = studentServices.findOne(id);
-                List<Student> result = new ArrayList<>();
-                result.add(values);
-                responseData.setData(result);
-                responseData.setResult(true);
-                responseData.setMessage(null);
-                return ResponseEntity.ok(responseData);
-            } catch (Exception e) {
-                List<String> message = new ArrayList<>();
-                message.add(e.getMessage());
-                responseData.setMessage(message);
-                responseData.setData(null);
-                responseData.setResult(false);
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
-            }
-            // return studentsServices.findOne(id);
+    public ResponseEntity<ResponsData<Student>> fetchStudentsById(@PathVariable("id") int id) {
+        ResponsData<Student> responseData = new ResponsData<>();
+        try {
+            responseData.setResult(true);
+            List<Student> value = new ArrayList<>();
+            value.add(studentServices.findOne(id));
+            responseData.setData(value);
+
+            return ResponseEntity.ok(responseData);
+        } catch (Exception ex) {
+            responseData.setResult(false);
+            responseData.getMessage().add(ex.getMessage());
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
         }
+    }
 
 
     @PutMapping
@@ -190,6 +181,31 @@ public class StudentController {
             return ResponseEntity.ok(responseData);
         } catch (Exception ex) {
             responseData.getMessage().add(ex.getMessage());
+            responseData.setData(null);
+            responseData.setResult(false);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
+        }
+    }
+
+    @PostMapping("/auth")
+    public ResponseEntity<ResponsData<Student>> getStudentAuth(@RequestBody AuthKey authKey) {
+        ResponsData<Student> responseData = new ResponsData<>();
+
+        System.out.print(authKey.getEmail());
+        System.out.print(authKey.getPassword());
+
+        try {
+            Iterable<Student> values = studentServices.findAuth(authKey.getEmail(),
+                    authKey.getPassword());
+            responseData.setResult(true);
+            responseData.getMessage();
+            responseData.setData(values);
+            return ResponseEntity.ok(responseData);
+
+        } catch (Exception e) {
+            List<String> message = new ArrayList<>();
+            message.add(e.getMessage());
+            responseData.setMessage(message);
             responseData.setData(null);
             responseData.setResult(false);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);

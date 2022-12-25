@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-public class CoursesServices {
 
+public class CoursesServices {
     @Autowired
     private CoursesRepo coursesRepo;
 
+    //insert
     public Courses save(Courses courses){
+        //DTO
         return coursesRepo.save(courses);
     }
 
@@ -27,5 +29,15 @@ public class CoursesServices {
     public void removeOne(int id){
         coursesRepo.deleteById(id);
     }
-    
+
+    public Courses update(Courses courses) {
+        Courses result = findOne(courses.getId());
+
+        result.setCode(courses.getCode());
+        result.setCredit(courses.getCredit());
+        result.setIs_active(courses.isIs_active());
+        result.setName(courses.getName());
+
+        return result;
+    }
 }
